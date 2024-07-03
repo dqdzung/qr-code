@@ -1,17 +1,42 @@
-import { View, Text, StyleSheet } from "react-native";
+import { useState } from "react";
+import { View, StyleSheet } from "react-native";
+import GeneratorInput from "~/components/GeneratorInput";
+import GeneratorResult from "~/components/GeneratorResult";
 
-export default function TabSettings() {
+export default function TabGenerator() {
+	const [content, setContent] = useState("");
+	const [generated, setGenerated] = useState(false);
+
+	const handleGenerate = () => {
+		setGenerated(true);
+	};
+
+	const onReset = () => {
+		setGenerated(false);
+		setContent("");
+	};
+
 	return (
-		<View style={styles.container}>
-			<Text className="text-foreground">Settings</Text>
+		<View style={styles.result}>
+			{!generated ? (
+				<GeneratorInput
+					content={content}
+					setContent={setContent}
+					handleGenerate={handleGenerate}
+				/>
+			) : (
+				<GeneratorResult content={content} onReset={onReset} />
+			)}
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
+	result: {
+		width: "100%",
 		justifyContent: "center",
-		alignItems: "center",
+		paddingHorizontal: 10,
+		gap: 10,
+		flex: 1,
 	},
 });

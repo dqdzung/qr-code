@@ -67,7 +67,7 @@ const ScanResult = ({
 				<View style={styles.buttonContent}>
 					{!isCopied ? (
 						<>
-							<icons.Clipboard className="text-background" size={20} />
+							<icons.Copy className="text-background" size={20} />
 							<Text className="text-background">Copy to clipboard</Text>
 						</>
 					) : (

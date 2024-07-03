@@ -13,6 +13,7 @@ export default function TabHome() {
 	const [permission, requestPermission] = useCameraPermissions();
 	const [scanned, setScanned] = useState(false);
 	const [content, setContent] = useState("");
+	const [flashOn, setFlashOn] = useState(false);
 
 	const handleBarCodeScanned = ({ data }: BarcodeScanningResult) => {
 		setScanned(true);
@@ -41,15 +42,30 @@ export default function TabHome() {
 	return (
 		<View style={styles.container}>
 			{!scanned ? (
-				<CameraView
-					style={styles.camera}
-					facing={"back"}
-					onBarcodeScanned={handleBarCodeScanned}
-				>
-					<View style={styles.iconContainer}>
-						<icons.Scan size={450} strokeWidth={0.4} stroke={"white"} />
-					</View>
-				</CameraView>
+				<>
+					<CameraView
+						style={styles.camera}
+						facing={"back"}
+						enableTorch={flashOn}
+						onBarcodeScanned={handleBarCodeScanned}
+					>
+						<View style={styles.iconContainer}>
+							<icons.Scan size={450} strokeWidth={0.4} stroke={"white"} />
+						</View>
+					</CameraView>
+
+					<Button
+						style={{ marginTop: 40, width: 150 }}
+						onPress={() => setFlashOn(!flashOn)}
+						size={"lg"}
+					>
+						{!flashOn ? (
+							<icons.Zap className="text-background" />
+						) : (
+							<icons.ZapOff className="text-background" />
+						)}
+					</Button>
+				</>
 			) : (
 				<ScanResult content={content} handleRescan={() => setScanned(false)} />
 			)}

@@ -9,7 +9,7 @@ export default function TabLayout() {
 				options={{
 					title: "Reader",
 					headerShown: false,
-					tabBarIcon: () => <icons.Scan className="text-foreground" />,
+					tabBarIcon: () => <icons.ScanLine className="text-foreground" />,
 				}}
 			/>
 			<Tabs.Screen

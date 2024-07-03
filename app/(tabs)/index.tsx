@@ -1,18 +1,22 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { CameraView, useCameraPermissions } from "expo-camera";
+import { View, Text, StyleSheet } from "react-native";
+import {
+	BarcodeScanningResult,
+	CameraView,
+	useCameraPermissions,
+} from "expo-camera";
 import { Button } from "~/components/ui/button";
 import icons from "~/lib/icons";
 import { useState } from "react";
+import ScanResult from "~/components/ScanResult";
 
 export default function TabHome() {
 	const [permission, requestPermission] = useCameraPermissions();
 	const [scanned, setScanned] = useState(false);
+	const [content, setContent] = useState("");
 
-	const handleBarCodeScanned = ({ type, data }: any) => {
+	const handleBarCodeScanned = ({ data }: BarcodeScanningResult) => {
 		setScanned(true);
-		console.log(
-			`Bar code with type ${type} and data ${data} has been scanned!`
-		);
+		setContent(data);
 	};
 
 	if (!permission) {
@@ -27,11 +31,7 @@ export default function TabHome() {
 				<Text className="text-foreground">
 					We need your permission to show the camera
 				</Text>
-				<Button
-					variant={"destructive"}
-					onPress={requestPermission}
-					style={{ marginVertical: 15 }}
-				>
+				<Button variant={"destructive"} onPress={requestPermission}>
 					<Text style={{ color: "white" }}>Grant Permission</Text>
 				</Button>
 			</View>
@@ -40,15 +40,19 @@ export default function TabHome() {
 
 	return (
 		<View style={styles.container}>
-			<CameraView
-				style={styles.camera}
-				facing={"back"}
-				onBarcodeScanned={handleBarCodeScanned}
-			>
-				<View style={styles.buttonContainer}>
-					<icons.Scan size={500} strokeWidth={0.6} stroke={"white"} />
-				</View>
-			</CameraView>
+			{!scanned ? (
+				<CameraView
+					style={styles.camera}
+					facing={"back"}
+					onBarcodeScanned={handleBarCodeScanned}
+				>
+					<View style={styles.iconContainer}>
+						<icons.Scan size={450} strokeWidth={0.4} stroke={"white"} />
+					</View>
+				</CameraView>
+			) : (
+				<ScanResult content={content} handleRescan={() => setScanned(false)} />
+			)}
 		</View>
 	);
 }
@@ -58,12 +62,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
+		gap: 10,
 	},
 	camera: {
 		flex: 1,
+		maxHeight: 400,
 		width: "100%",
 	},
-	buttonContainer: {
+	iconContainer: {
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
@@ -71,6 +77,8 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 24,
 		fontWeight: "bold",
-		color: "white",
 	},
 });
+
+// borderColor: "red",
+// borderWidth: 1,

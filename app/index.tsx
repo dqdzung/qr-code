@@ -6,8 +6,9 @@ import {
 } from "expo-camera";
 import { Button } from "~/components/ui/button";
 import icons from "~/lib/icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ScanResult from "~/components/ScanResult";
+
 const containerClass = "flex-1 items-center justify-center gap-3";
 
 export default function TabHome() {

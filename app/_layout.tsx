@@ -3,16 +3,16 @@ import { Theme, ThemeProvider } from "@react-navigation/native";
 import { router, SplashScreen, Stack, usePathname } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { Platform, Pressable, TouchableOpacity, View } from "react-native";
+import { Platform, Pressable, View } from "react-native";
 import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { PortalHost } from "@rn-primitives/portal";
 import { ThemeToggle } from "~/components/ThemeToggle";
-import "~/global.css";
 import { Button } from "~/components/ui/button";
-import { Text } from "~/components/ui/text";
 import { cn } from "~/lib/utils";
 import icons from "~/lib/icons";
+import * as Animatable from "react-native-animatable";
+import "~/global.css";
 
 const LIGHT_THEME: Theme = {
 	dark: false,
@@ -35,6 +35,10 @@ export default function RootLayout() {
 	const pathname = usePathname();
 	const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
 	const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+
+	const animateRef = React.useRef<any>(null);
+	const animateRef2 = React.useRef<any>(null);
+	const animateRef3 = React.useRef<any>(null);
 
 	const handleRouting = (key: string) => {
 		if (key === pathname) return;
@@ -104,29 +108,52 @@ export default function RootLayout() {
 
 			<View
 				className={cn(
-					"flex-row px-6 py-3 justify-around items-center pb-6",
+					"flex-row px-6 justify-around items-center pt-4 border-t-[0.5px] border-gray-500",
 					isDarkColorScheme ? "bg-background" : "bg-white"
 				)}
 			>
-				<TouchableOpacity onPress={() => handleRouting("/generator")}>
-					<icons.QrCode className="text-foreground" />
-				</TouchableOpacity>
+				<Button
+					className="bg-transparent"
+					onPress={() => {
+						animateRef2.current?.tada(300);
+						handleRouting("/generator");
+					}}
+				>
+					<Animatable.View ref={animateRef2}>
+						<icons.QrCode className="text-foreground" />
+					</Animatable.View>
+				</Button>
 
-				<TouchableOpacity onPress={() => handleRouting("/")}>
-					<View
-						className={cn(
-							"items-center justify-center w-20 h-20 rounded-full border-8",
-							isDarkColorScheme ? "border-white" : "border-black",
-							isDarkColorScheme ? "bg-black" : "bg-white"
-						)}
-					>
-						<icons.ScanLine className="text-foreground" />
-					</View>
-				</TouchableOpacity>
+				<Pressable
+					onPress={() => {
+						animateRef.current?.bounce(200);
+						handleRouting("/");
+					}}
+				>
+					<Animatable.View ref={animateRef}>
+						<View
+							className={cn(
+								"items-center justify-center w-[70px] h-[70px] rounded-full border-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[70px]",
+								isDarkColorScheme ? "border-white" : "border-black",
+								isDarkColorScheme ? "bg-black" : "bg-white"
+							)}
+						>
+							<icons.ScanLine className="text-foreground" />
+						</View>
+					</Animatable.View>
+				</Pressable>
 
-				<TouchableOpacity onPress={() => handleRouting("/info")}>
-					<icons.Info className="text-foreground" />
-				</TouchableOpacity>
+				<Button
+					className="bg-transparent"
+					onPress={() => {
+						animateRef3.current?.shake(300);
+						handleRouting("/info");
+					}}
+				>
+					<Animatable.View ref={animateRef3}>
+						<icons.Info className="text-foreground" />
+					</Animatable.View>
+				</Button>
 			</View>
 			<PortalHost />
 		</ThemeProvider>

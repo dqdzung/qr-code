@@ -6,6 +6,7 @@ import icons from "~/lib/icons";
 import * as Linking from "expo-linking";
 import * as Clipboard from "expo-clipboard";
 import { isUrlValid } from "~/lib/utils";
+import { buttonContentClass, textareaClass } from "./GeneratorInput";
 
 const ScanResult = ({
 	content,
@@ -26,45 +27,41 @@ const ScanResult = ({
 	};
 
 	return (
-		<View style={styles.result}>
+		<View className="w-full justify-center px-3 gap-3 flex-1">
 			<Textarea
-				style={styles.textarea}
+				className={textareaClass}
 				placeholder="Result..."
 				value={content}
 				editable={false}
 			/>
 
-			<View style={styles.buttonContainer}>
-				<Button
-					variant={"destructive"}
-					onPress={handleRescan}
-					style={{ flex: 1 }}
-				>
-					<View style={styles.buttonContent}>
-						<icons.Refresh color={"white"} size={20} />
-						<Text style={{ color: "white" }}>Scan again</Text>
+			<View className="flex-row gap-3 justify-center">
+				<Button className="flex-1" variant="destructive" onPress={handleRescan}>
+					<View className={buttonContentClass}>
+						<icons.Refresh color="white" size={20} />
+						<Text className="text-white">Scan again</Text>
 					</View>
 				</Button>
 				{isContentURL && (
 					<Button
-						variant={"default"}
+						variant="default"
 						onPress={handleGoToLink}
 						style={{ flex: 1, backgroundColor: "green" }}
 					>
-						<View style={styles.buttonContent}>
-							<icons.Link color={"white"} size={20} />
-							<Text style={{ color: "white" }}>Go to URL</Text>
+						<View className={buttonContentClass}>
+							<icons.Link color="white" size={20} />
+							<Text className="text-white">Go to URL</Text>
 						</View>
 					</Button>
 				)}
 			</View>
 
 			<Button
-				variant={"default"}
+				variant="default"
 				onPress={handleCopyClipboard}
 				disabled={isCopied}
 			>
-				<View style={styles.buttonContent}>
+				<View className={buttonContentClass}>
 					{!isCopied ? (
 						<>
 							<icons.Copy className="text-background" size={20} />
@@ -80,29 +77,3 @@ const ScanResult = ({
 };
 
 export default ScanResult;
-
-const styles = StyleSheet.create({
-	result: {
-		width: "100%",
-		justifyContent: "center",
-		paddingHorizontal: 10,
-		gap: 10,
-		flex: 1,
-	},
-	textarea: {
-		borderColor: "red",
-		fontSize: 18,
-		flex: 1,
-		maxHeight: 300,
-	},
-	buttonContainer: {
-		flexDirection: "row",
-		gap: 10,
-		justifyContent: "center",
-	},
-	buttonContent: {
-		flexDirection: "row",
-		gap: 5,
-		alignItems: "center",
-	},
-});

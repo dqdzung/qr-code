@@ -1,11 +1,19 @@
 import { StyleSheet, Text, ToastAndroid, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import QRCode from "react-native-qrcode-svg";
 import RNFS from "react-native-fs";
 import * as MediaLibrary from "expo-media-library";
 import { Button } from "./ui/button";
 import icons from "~/lib/icons";
 import logo from "~/assets/images/avatar.png";
+import * as Animatable from "react-native-animatable";
+import { Switch } from "./ui/switch";
+import { Label } from "./ui/label";
+import ColorPicker, { HueSlider } from "reanimated-color-picker";
+import { useColorScheme } from "~/lib/useColorScheme";
+import { buttonContentClass } from "./GeneratorInput";
+
+const DEFAULT_GRADIENT = ["#3F94FB", "#FC466B"];
 
 const GeneratorResult = ({
 	content,
@@ -16,9 +24,16 @@ const GeneratorResult = ({
 }) => {
 	const [qrRef, setQrRef] = useState<any>(null);
 
+	const animateRef = useRef<any>(null);
+
+	const [enableGradient, setEnableGradient] = useState(false);
+	const [gradient, setGradient] = useState<string[]>(DEFAULT_GRADIENT);
+
 	const handleReset = () => {
 		onReset();
 		setQrRef(null);
+		setEnableGradient(false);
+		setGradient(DEFAULT_GRADIENT);
 	};
 
 	const handleSave = async () => {
@@ -38,9 +53,57 @@ const GeneratorResult = ({
 		}
 	};
 
+	const onSelectColor = (hex: string, index: number) => {
+		setGradient((prev) => {
+			const newGradient = [...prev];
+			newGradient[index] = hex;
+			return newGradient;
+		});
+	};
+
+	useEffect(() => {
+		animateRef.current?.zoomIn(100).then(() => animateRef.current?.tada(400));
+	}, []);
+
 	return (
 		<>
-			<View style={styles.qrContainer}>
+			<View className="w-full items-center gap-5">
+				<View className="flex-row items-center gap-2">
+					<Switch
+						checked={enableGradient}
+						onCheckedChange={setEnableGradient}
+						nativeID="linear-gradient"
+					/>
+					<Label
+						nativeID="linear-gradient"
+						onPress={() => setEnableGradient((prev) => !prev)}
+					>
+						Linear gradient
+					</Label>
+				</View>
+
+				{enableGradient && (
+					<View className={"w-full items-center gap-5"}>
+						<ColorPicker
+							style={{ width: "70%" }}
+							value={gradient[0]}
+							onComplete={({ hex }) => onSelectColor(hex, 0)}
+						>
+							<HueSlider thumbShape="pill" thumbColor="white" />
+						</ColorPicker>
+
+						<ColorPicker
+							style={{ width: "70%" }}
+							value={gradient[1]}
+							onComplete={({ hex }) => onSelectColor(hex, 1)}
+						>
+							<HueSlider thumbShape="pill" thumbColor="white" />
+						</ColorPicker>
+					</View>
+				)}
+			</View>
+
+			<Animatable.View ref={animateRef} className="items-center my-3">
 				<QRCode
 					quietZone={10}
 					value={content}
@@ -48,15 +111,15 @@ const GeneratorResult = ({
 					getRef={(c) => setQrRef(c)}
 					logo={logo}
 					logoMargin={5}
-					enableLinearGradient
-					linearGradient={["#3F94FB", "#FC466B"]}
+					enableLinearGradient={enableGradient}
+					linearGradient={gradient}
 					logoBackgroundColor="transparent"
 					logoBorderRadius={100}
 					logoSize={70}
 				/>
-			</View>
+			</Animatable.View>
 			<Button variant={"default"} onPress={handleSave}>
-				<View style={styles.buttonContent}>
+				<View className={buttonContentClass}>
 					<icons.Paste className="text-background" size={20} />
 					<Text className="text-background">Save</Text>
 				</View>
@@ -66,7 +129,7 @@ const GeneratorResult = ({
 				variant={"destructive"}
 				onPress={handleReset}
 			>
-				<View style={styles.buttonContent}>
+				<View className={buttonContentClass}>
 					<icons.Trash color={"white"} size={20} />
 					<Text style={{ color: "white" }}>Clear</Text>
 				</View>
@@ -76,12 +139,3 @@ const GeneratorResult = ({
 };
 
 export default GeneratorResult;
-
-const styles = StyleSheet.create({
-	qrContainer: { alignItems: "center", marginVertical: 10 },
-	buttonContent: {
-		flexDirection: "row",
-		gap: 5,
-		alignItems: "center",
-	},
-});

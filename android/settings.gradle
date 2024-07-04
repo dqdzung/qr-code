@@ -1,4 +1,4 @@
-rootProject.name = 'QR-code'
+rootProject.name = 'QR Code'
 
 dependencyResolutionManagement {
   versionCatalogs {

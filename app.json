@@ -23,7 +23,7 @@
 			},
 			"permissions": [
 				"android.permission.CAMERA",
-				"android.permission.RECORD_AUDIO"
+				"android.permission.MANAGE_MEDIA"
 			],
 			"package": "com.dqdzung.qrcode"
 		},
@@ -37,15 +37,12 @@
 			[
 				"expo-camera",
 				{
-					"cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
-					"microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
-					"recordAudioAndroid": true
+					"cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
 				}
 			],
 			[
 				"expo-media-library",
 				{
-					"photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
 					"savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
 					"isAccessMediaLocationEnabled": true
 				}

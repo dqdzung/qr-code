@@ -1,15 +1,18 @@
-import "~/global.css";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Theme, ThemeProvider } from "@react-navigation/native";
-import { SplashScreen, Stack } from "expo-router";
+import { router, SplashScreen, Stack, usePathname } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { Platform } from "react-native";
+import { Platform, Pressable, TouchableOpacity, View } from "react-native";
 import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { PortalHost } from "@rn-primitives/portal";
 import { ThemeToggle } from "~/components/ThemeToggle";
+import "~/global.css";
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import { cn } from "~/lib/utils";
+import icons from "~/lib/icons";
 
 const LIGHT_THEME: Theme = {
 	dark: false,
@@ -29,8 +32,14 @@ export {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+	const pathname = usePathname();
 	const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
 	const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+
+	const handleRouting = (key: string) => {
+		if (key === pathname) return;
+		router.replace(key);
+	};
 
 	React.useEffect(() => {
 		(async () => {
@@ -64,12 +73,61 @@ export default function RootLayout() {
 	return (
 		<ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
 			<StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-			<Stack>
+			<Stack
+				screenOptions={{
+					headerBackButtonMenuEnabled: false,
+					headerRight: () => <ThemeToggle />,
+				}}
+			>
 				<Stack.Screen
-					name="(tabs)"
-					options={{ title: "QR Code", headerRight: () => <ThemeToggle /> }}
+					name="index"
+					options={{
+						animation: "fade",
+						title: "QR Reader",
+					}}
+				/>
+				<Stack.Screen
+					name="generator"
+					options={{
+						animation: "slide_from_left",
+						title: "QR Generator",
+					}}
+				/>
+				<Stack.Screen
+					name="info"
+					options={{
+						animation: "slide_from_right",
+						title: "Info",
+					}}
 				/>
 			</Stack>
+
+			<View
+				className={cn(
+					"flex-row px-6 py-3 justify-around items-center pb-6",
+					isDarkColorScheme ? "bg-background" : "bg-white"
+				)}
+			>
+				<TouchableOpacity onPress={() => handleRouting("/generator")}>
+					<icons.QrCode className="text-foreground" />
+				</TouchableOpacity>
+
+				<TouchableOpacity onPress={() => handleRouting("/")}>
+					<View
+						className={cn(
+							"items-center justify-center w-20 h-20 rounded-full border-8",
+							isDarkColorScheme ? "border-white" : "border-black",
+							isDarkColorScheme ? "bg-black" : "bg-white"
+						)}
+					>
+						<icons.ScanLine className="text-foreground" />
+					</View>
+				</TouchableOpacity>
+
+				<TouchableOpacity onPress={() => handleRouting("/info")}>
+					<icons.Info className="text-foreground" />
+				</TouchableOpacity>
+			</View>
 			<PortalHost />
 		</ThemeProvider>
 	);

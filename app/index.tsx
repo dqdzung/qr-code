@@ -8,11 +8,13 @@ import { Button } from "~/components/ui/button";
 import icons from "~/lib/icons";
 import { useState } from "react";
 import ScanResult from "~/components/ScanResult";
+const containerClass = "flex-1 items-center justify-center gap-3";
 
 export default function TabHome() {
 	const [permission, requestPermission] = useCameraPermissions();
-	const [scanned, setScanned] = useState(false);
+
 	const [content, setContent] = useState("");
+	const [scanned, setScanned] = useState(false);
 	const [flashOn, setFlashOn] = useState(false);
 
 	const handleBarCodeScanned = ({ data }: BarcodeScanningResult) => {
@@ -28,36 +30,37 @@ export default function TabHome() {
 	if (!permission.granted) {
 		// Camera permissions are not granted yet.
 		return (
-			<View style={styles.container}>
+			<View className={containerClass}>
 				<Text className="text-foreground">
 					We need your permission to show the camera
 				</Text>
-				<Button variant={"destructive"} onPress={requestPermission}>
-					<Text style={{ color: "white" }}>Grant Permission</Text>
+				<Button variant="destructive" onPress={requestPermission}>
+					<Text className="text-white">Grant Permission</Text>
 				</Button>
 			</View>
 		);
 	}
 
 	return (
-		<View style={styles.container}>
+		<View className={containerClass}>
 			{!scanned ? (
 				<>
 					<CameraView
-						style={styles.camera}
-						facing={"back"}
+						className="w-full flex-1"
+						style={{ maxHeight: 400 }}
+						facing="back"
 						enableTorch={flashOn}
 						onBarcodeScanned={handleBarCodeScanned}
 					>
-						<View style={styles.iconContainer}>
-							<icons.Scan size={450} strokeWidth={0.4} stroke={"white"} />
+						<View className="flex-1 items-center justify-center">
+							<icons.Scan size={450} strokeWidth={0.4} className="text-white" />
 						</View>
 					</CameraView>
 
 					<Button
-						style={{ marginTop: 40, width: 150 }}
+						className="mt-12 w-[150px]"
 						onPress={() => setFlashOn(!flashOn)}
-						size={"lg"}
+						size="lg"
 					>
 						{!flashOn ? (
 							<icons.Zap className="text-background" />
@@ -72,29 +75,3 @@ export default function TabHome() {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		gap: 10,
-	},
-	camera: {
-		flex: 1,
-		maxHeight: 400,
-		width: "100%",
-	},
-	iconContainer: {
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	text: {
-		fontSize: 24,
-		fontWeight: "bold",
-	},
-});
-
-// borderColor: "red",
-// borderWidth: 1,

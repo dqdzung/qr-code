@@ -5,6 +5,7 @@ import RNFS from "react-native-fs";
 import * as MediaLibrary from "expo-media-library";
 import { Button } from "./ui/button";
 import icons from "~/lib/icons";
+import logo from "~/assets/images/avatar.png";
 
 const GeneratorResult = ({
 	content,
@@ -45,6 +46,13 @@ const GeneratorResult = ({
 					value={content}
 					size={300}
 					getRef={(c) => setQrRef(c)}
+					logo={logo}
+					logoMargin={5}
+					enableLinearGradient
+					linearGradient={["#3F94FB", "#FC466B"]}
+					logoBackgroundColor="transparent"
+					logoBorderRadius={100}
+					logoSize={70}
 				/>
 			</View>
 			<Button variant={"default"} onPress={handleSave}>
@@ -59,7 +67,7 @@ const GeneratorResult = ({
 				onPress={handleReset}
 			>
 				<View style={styles.buttonContent}>
-					<icons.QrCode color={"white"} size={20} />
+					<icons.Trash color={"white"} size={20} />
 					<Text style={{ color: "white" }}>Clear</Text>
 				</View>
 			</Button>

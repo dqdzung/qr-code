@@ -8,8 +8,8 @@
 		"ios": "expo run:ios",
 		"prebuild": "expo prebuild --clean",
 		"build:dev": "expo prebuild --clean && eas build --profile development --platform android",
-		"build:preview": "expo prebuild --clean && eas build --profile preview --profile android",
-		"build:production": "expo prebuild --clean && eas build --profile production --profile android"
+		"build:preview": "expo prebuild --clean && eas build --profile preview --platform android",
+		"build:production": "expo prebuild --clean && eas build --profile production --platform android"
 	},
 	"dependencies": {
 		"@radix-ui/react-progress": "^1.0.3",

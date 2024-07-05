@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View } from "react-native";
+import { ToastAndroid, View } from "react-native";
 import GeneratorInput from "~/components/GeneratorInput";
 import GeneratorResult from "~/components/GeneratorResult";
 
@@ -8,6 +8,11 @@ export default function TabGenerator() {
 	const [generated, setGenerated] = useState(false);
 
 	const handleGenerate = () => {
+		if (content === "") return;
+		if (content.length > 1000) {
+			ToastAndroid.show("Content too long for QR", ToastAndroid.SHORT);
+			return;
+		}
 		setGenerated(true);
 	};
 

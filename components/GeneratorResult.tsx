@@ -1,4 +1,4 @@
-import { StyleSheet, Text, ToastAndroid, View } from "react-native";
+import { Text, ToastAndroid, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import QRCode from "react-native-qrcode-svg";
 import RNFS from "react-native-fs";
@@ -7,11 +7,9 @@ import { Button } from "./ui/button";
 import icons from "~/lib/icons";
 import logo from "~/assets/images/avatar.png";
 import * as Animatable from "react-native-animatable";
-import { Switch } from "./ui/switch";
-import { Label } from "./ui/label";
 import ColorPicker, { HueSlider } from "reanimated-color-picker";
-import { useColorScheme } from "~/lib/useColorScheme";
 import { buttonContentClass } from "./GeneratorInput";
+import { Toggle } from "./ui/toggle";
 
 const DEFAULT_GRADIENT = ["#3F94FB", "#FC466B"];
 
@@ -47,7 +45,7 @@ const GeneratorResult = ({
 						return MediaLibrary.saveToLibraryAsync(filePath);
 					})
 					.then(() => {
-						ToastAndroid.show("Saved to gallery", ToastAndroid.LONG);
+						ToastAndroid.show("Saved", ToastAndroid.SHORT);
 					});
 			});
 		}
@@ -68,7 +66,7 @@ const GeneratorResult = ({
 	return (
 		<>
 			<View className="w-full items-center gap-5">
-				<View className="flex-row items-center gap-2">
+				{/* <View className="flex-row items-center gap-2">
 					<Switch
 						checked={enableGradient}
 						onCheckedChange={setEnableGradient}
@@ -80,7 +78,17 @@ const GeneratorResult = ({
 					>
 						Linear gradient
 					</Label>
-				</View>
+				</View> */}
+				<Toggle
+					pressed={enableGradient}
+					onPressedChange={setEnableGradient}
+					aria-label="Toggle gradient"
+					variant={"default"}
+				>
+					<Text className="text-foreground">
+						{enableGradient ? "Disable" : "Enable"} gradient
+					</Text>
+				</Toggle>
 
 				{enableGradient && (
 					<View className={"w-full items-center gap-5"}>

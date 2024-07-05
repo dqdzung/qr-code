@@ -12,6 +12,7 @@ import { Zap } from './Zap';
 import { ZapOff } from './ZapOff';
 import { Trash } from './Trash';
 import { ImageDown } from './ImageDown';
+import { Palette } from './Palette';
 const icons = {
   Sun,
   MoonStar,
@@ -26,6 +27,7 @@ const icons = {
   Zap,
   ZapOff,
   Trash,
-  ImageDown
+  ImageDown,
+  Palette
 }
 export default icons

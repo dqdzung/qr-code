@@ -3,7 +3,12 @@ import { Theme, ThemeProvider } from "@react-navigation/native";
 import { router, SplashScreen, Stack, usePathname } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { Platform, Pressable, View } from "react-native";
+import {
+	Platform,
+	Pressable,
+	TouchableWithoutFeedback,
+	View,
+} from "react-native";
 import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { PortalHost } from "@rn-primitives/portal";
@@ -108,7 +113,7 @@ export default function RootLayout() {
 
 			<View
 				className={cn(
-					"flex-row px-6 justify-around items-center border-t-[0.5px] py-3 border-gray-500",
+					"flex-row px-6 justify-around items-center border-t-[0.5px] py-1 border-gray-500",
 					isDarkColorScheme ? "bg-background" : "bg-white"
 				)}>
 				<Button
@@ -122,16 +127,16 @@ export default function RootLayout() {
 					</Animatable.View>
 				</Button>
 
-				<Pressable onPress={() => handleRouting("/")}>
+				<TouchableWithoutFeedback onPress={() => handleRouting("/")}>
 					<View
 						className={cn(
-							"items-center justify-center w-[65px] h-[65px] rounded-full border-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[85px]",
+							"items-center justify-center w-[65px] h-[65px] rounded-full border-8 -translate-y-[35px]",
 							isDarkColorScheme ? "border-white" : "border-black",
 							isDarkColorScheme ? "bg-black" : "bg-white"
 						)}>
 						<icons.ScanLine className="text-foreground" />
 					</View>
-				</Pressable>
+				</TouchableWithoutFeedback>
 
 				<Button
 					className="bg-transparent"

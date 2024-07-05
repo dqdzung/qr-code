@@ -10,7 +10,7 @@ import { useState } from "react";
 import ScanResult from "~/components/ScanResult";
 import { cn } from "~/lib/utils";
 
-const containerClass = "flex-1 items-center gap-3";
+const containerClass = "flex-1 justify-center gap-3";
 
 export default function TabHome() {
 	const [permission, requestPermission] = useCameraPermissions();
@@ -22,7 +22,7 @@ export default function TabHome() {
 	const handleReset = () => {
 		setContent("");
 		setScanned(false);
-    setFlashOn(false);
+		setFlashOn(false);
 	};
 
 	const handleBarCodeScanned = ({ data }: BarcodeScanningResult) => {
@@ -52,19 +52,16 @@ export default function TabHome() {
 	return (
 		<View className={containerClass}>
 			<CameraView
-				className="w-full flex-1"
-				style={{ maxHeight: 400 }}
+				style={{ flex: 1 }}
 				facing="back"
 				enableTorch={flashOn}
 				onBarcodeScanned={handleBarCodeScanned}>
-				<View className="flex-1 items-center justify-center">
-					<icons.Scan size={450} strokeWidth={0.4} className="text-white" />
-				</View>
+				<View className="bg-transparent" />
 			</CameraView>
 
-			<View className="flex-1 items-center justify-center gap-3 w-full pb-12">
+			<View className="px-3 flex-1 items-center justify-center gap-3 w-full pb-14">
 				<Button
-					className="w-[150px]"
+					className="w-full h-[60px]"
 					onPress={() => setFlashOn(!flashOn)}
 					size="lg">
 					{!flashOn ? (

@@ -1,11 +1,10 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useMemo, useState } from "react";
+import { Text, View } from "react-native";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import icons from "~/lib/icons";
 import * as Linking from "expo-linking";
 import * as Clipboard from "expo-clipboard";
-import { isUrlValid } from "~/lib/utils";
 import { buttonContentClass, textareaClass } from "./GeneratorInput";
 
 const ScanResult = ({
@@ -26,14 +25,14 @@ const ScanResult = ({
 	};
 
 	return (
-		<View className="w-full justify-center px-3 gap-3 flex-1">
+		<View className="w-full justify-center gap-3 flex-1">
 			<Textarea
 				className={textareaClass}
 				placeholder="Result..."
 				value={content}
 				editable={false}
 			/>
-			<View className="flex-1 gap-3">
+			<View className="gap-3">
 				<View className="flex-row gap-3 justify-center">
 					<Button className="flex-1 bg-green-700" onPress={handleGoToLink}>
 						<View className={buttonContentClass}>

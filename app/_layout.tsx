@@ -36,9 +36,8 @@ export default function RootLayout() {
 	const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
 	const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
 
-	const animateRef = React.useRef<any>(null);
-	const animateRef2 = React.useRef<any>(null);
-	const animateRef3 = React.useRef<any>(null);
+	const animateQrRef = React.useRef<any>(null);
+	const animateInfoRef = React.useRef<any>(null);
 
 	const handleRouting = (key: string) => {
 		if (key === pathname) return;
@@ -115,34 +114,32 @@ export default function RootLayout() {
 				<Button
 					className="bg-transparent"
 					onPress={() => {
-						animateRef2.current?.tada(300);
+						animateQrRef.current?.tada(300);
 						handleRouting("/generator");
 					}}>
-					<Animatable.View ref={animateRef2}>
+					<Animatable.View ref={animateQrRef}>
 						<icons.QrCode className="text-foreground" />
 					</Animatable.View>
 				</Button>
 
 				<Pressable onPress={() => handleRouting("/")}>
-					<Animatable.View ref={animateRef}>
-						<View
-							className={cn(
-								"items-center justify-center w-[65px] h-[65px] rounded-full border-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60px]",
-								isDarkColorScheme ? "border-white" : "border-black",
-								isDarkColorScheme ? "bg-black" : "bg-white"
-							)}>
-							<icons.ScanLine className="text-foreground" />
-						</View>
-					</Animatable.View>
+					<View
+						className={cn(
+							"items-center justify-center w-[65px] h-[65px] rounded-full border-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[85px]",
+							isDarkColorScheme ? "border-white" : "border-black",
+							isDarkColorScheme ? "bg-black" : "bg-white"
+						)}>
+						<icons.ScanLine className="text-foreground" />
+					</View>
 				</Pressable>
 
 				<Button
 					className="bg-transparent"
 					onPress={() => {
-						animateRef3.current?.shake(300);
+						animateInfoRef.current?.shake(300);
 						handleRouting("/info");
 					}}>
-					<Animatable.View ref={animateRef3}>
+					<Animatable.View ref={animateInfoRef}>
 						<icons.Info className="text-foreground" />
 					</Animatable.View>
 				</Button>

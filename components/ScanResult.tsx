@@ -33,37 +33,38 @@ const ScanResult = ({
 				value={content}
 				editable={false}
 			/>
-			<View className="flex-row gap-3 justify-center">
-				<Button className="flex-1 bg-green-700" onPress={handleGoToLink}>
-					<View className={buttonContentClass}>
-						<icons.Link color="white" size={20} />
-						<Text className="text-white">Go to URL</Text>
-					</View>
-				</Button>
+			<View className="flex-1 gap-3">
+				<View className="flex-row gap-3 justify-center">
+					<Button className="flex-1 bg-green-700" onPress={handleGoToLink}>
+						<View className={buttonContentClass}>
+							<icons.Link color="white" size={20} />
+							<Text className="text-white">Go to URL</Text>
+						</View>
+					</Button>
 
-				<Button
-					className="flex-1"
-					onPress={handleCopyClipboard}
-					disabled={isCopied}>
+					<Button
+						className="flex-1"
+						onPress={handleCopyClipboard}
+						disabled={isCopied}>
+						<View className={buttonContentClass}>
+							{!isCopied ? (
+								<>
+									<icons.Copy className="text-background" size={20} />
+									<Text className="text-background">Copy</Text>
+								</>
+							) : (
+								<Text className="text-background">Copied!</Text>
+							)}
+						</View>
+					</Button>
+				</View>
+				<Button variant="destructive" onPress={handleClear}>
 					<View className={buttonContentClass}>
-						{!isCopied ? (
-							<>
-								<icons.Copy className="text-background" size={20} />
-								<Text className="text-background">Copy</Text>
-							</>
-						) : (
-							<Text className="text-background">Copied!</Text>
-						)}
+						<icons.Trash color="white" size={20} />
+						<Text className="text-white">Clear</Text>
 					</View>
 				</Button>
 			</View>
-
-			<Button className="flex-1" variant="destructive" onPress={handleClear}>
-				<View className={buttonContentClass}>
-					<icons.Trash color="white" size={20} />
-					<Text className="text-white">Clear</Text>
-				</View>
-			</Button>
 		</View>
 	);
 };

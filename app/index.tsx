@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 import {
 	BarcodeScanningResult,
 	CameraView,
@@ -6,10 +6,10 @@ import {
 } from "expo-camera";
 import { Button } from "~/components/ui/button";
 import icons from "~/lib/icons";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import ScanResult from "~/components/ScanResult";
 
-const containerClass = "flex-1 items-center justify-center gap-3";
+const containerClass = "flex-1 items-center gap-3";
 
 export default function TabHome() {
 	const [permission, requestPermission] = useCameraPermissions();
@@ -51,8 +51,7 @@ export default function TabHome() {
 						style={{ maxHeight: 400 }}
 						facing="back"
 						enableTorch={flashOn}
-						onBarcodeScanned={handleBarCodeScanned}
-					>
+						onBarcodeScanned={handleBarCodeScanned}>
 						<View className="flex-1 items-center justify-center">
 							<icons.Scan size={450} strokeWidth={0.4} className="text-white" />
 						</View>
@@ -61,8 +60,7 @@ export default function TabHome() {
 					<Button
 						className="mt-12 w-[150px]"
 						onPress={() => setFlashOn(!flashOn)}
-						size="lg"
-					>
+						size="lg">
 						{!flashOn ? (
 							<icons.Zap className="text-background" />
 						) : (

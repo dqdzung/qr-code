@@ -80,13 +80,12 @@ export default function RootLayout() {
 			<Stack
 				screenOptions={{
 					headerBackButtonMenuEnabled: false,
-					headerRight: () => <ThemeToggle />,
-				}}
-			>
+				}}>
 				<Stack.Screen
 					name="index"
 					options={{
-						animation: "fade",
+						headerTitleAlign: "center",
+						animation: "fade_from_bottom",
 						title: "QR Reader",
 					}}
 				/>
@@ -100,44 +99,38 @@ export default function RootLayout() {
 				<Stack.Screen
 					name="info"
 					options={{
+						headerRight: () => <ThemeToggle />,
 						animation: "slide_from_right",
 						title: "Info",
+						headerShadowVisible: false,
 					}}
 				/>
 			</Stack>
 
 			<View
 				className={cn(
-					"flex-row px-6 justify-around items-center pt-4 border-t-[0.5px] border-gray-500",
+					"flex-row px-6 justify-around items-center border-t-[0.5px] py-3 border-gray-500",
 					isDarkColorScheme ? "bg-background" : "bg-white"
-				)}
-			>
+				)}>
 				<Button
 					className="bg-transparent"
 					onPress={() => {
 						animateRef2.current?.tada(300);
 						handleRouting("/generator");
-					}}
-				>
+					}}>
 					<Animatable.View ref={animateRef2}>
 						<icons.QrCode className="text-foreground" />
 					</Animatable.View>
 				</Button>
 
-				<Pressable
-					onPress={() => {
-						animateRef.current?.bounce(200);
-						handleRouting("/");
-					}}
-				>
+				<Pressable onPress={() => handleRouting("/")}>
 					<Animatable.View ref={animateRef}>
 						<View
 							className={cn(
-								"items-center justify-center w-[70px] h-[70px] rounded-full border-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[70px]",
+								"items-center justify-center w-[65px] h-[65px] rounded-full border-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60px]",
 								isDarkColorScheme ? "border-white" : "border-black",
 								isDarkColorScheme ? "bg-black" : "bg-white"
-							)}
-						>
+							)}>
 							<icons.ScanLine className="text-foreground" />
 						</View>
 					</Animatable.View>
@@ -148,8 +141,7 @@ export default function RootLayout() {
 					onPress={() => {
 						animateRef3.current?.shake(300);
 						handleRouting("/info");
-					}}
-				>
+					}}>
 					<Animatable.View ref={animateRef3}>
 						<icons.Info className="text-foreground" />
 					</Animatable.View>

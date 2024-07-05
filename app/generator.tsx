@@ -22,7 +22,7 @@ export default function TabGenerator() {
 	};
 
 	return (
-		<View className="flex-1 w-full justify-center px-3 gap-3">
+		<View className="flex-1 w-full p-3 gap-3">
 			{!generated ? (
 				<GeneratorInput
 					content={content}

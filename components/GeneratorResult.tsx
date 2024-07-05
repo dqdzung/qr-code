@@ -1,5 +1,5 @@
 import { Text, ToastAndroid, View } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import QRCode from "react-native-qrcode-svg";
 import RNFS from "react-native-fs";
 import * as MediaLibrary from "expo-media-library";
@@ -10,6 +10,8 @@ import * as Animatable from "react-native-animatable";
 import ColorPicker, { HueSlider } from "reanimated-color-picker";
 import { buttonContentClass } from "./GeneratorInput";
 import { Toggle } from "./ui/toggle";
+import { useNavigation } from "expo-router";
+import GradientToggle from "./GradientToggle";
 
 const DEFAULT_GRADIENT = ["#3F94FB", "#FC466B"];
 
@@ -20,18 +22,20 @@ const GeneratorResult = ({
 	content: string;
 	onReset: () => void;
 }) => {
-	const [qrRef, setQrRef] = useState<any>(null);
-
+	const navigation = useNavigation();
 	const animateRef = useRef<any>(null);
 
-	const [enableGradient, setEnableGradient] = useState(false);
+	const [qrRef, setQrRef] = useState<any>(null);
 	const [gradient, setGradient] = useState<string[]>(DEFAULT_GRADIENT);
+	const [enableGradient, setEnableGradient] = useState(false);
+	const [saved, setSaved] = useState(false);
 
 	const handleReset = () => {
 		onReset();
 		setQrRef(null);
 		setEnableGradient(false);
 		setGradient(DEFAULT_GRADIENT);
+		setSaved(false);
 	};
 
 	const handleSave = async () => {
@@ -46,6 +50,7 @@ const GeneratorResult = ({
 					})
 					.then(() => {
 						ToastAndroid.show("Saved", ToastAndroid.SHORT);
+						setSaved(true);
 					});
 			});
 		}
@@ -57,48 +62,29 @@ const GeneratorResult = ({
 			newGradient[index] = hex;
 			return newGradient;
 		});
+		setSaved(false);
 	};
 
 	useEffect(() => {
 		animateRef.current?.zoomIn(100).then(() => animateRef.current?.tada(400));
 	}, []);
 
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			headerRight: () => (
+				<GradientToggle
+					handlePress={() => {
+						setEnableGradient(!enableGradient);
+						setSaved(false);
+					}}
+				/>
+			),
+		});
+	}, [enableGradient]);
+
 	return (
 		<>
-			<View className="w-full items-center gap-5">
-				<Toggle
-					pressed={enableGradient}
-					onPressedChange={setEnableGradient}
-					aria-label="Toggle gradient"
-					variant={"default"}
-				>
-					<Text className="text-foreground">
-						{enableGradient ? "Disable" : "Enable"} gradient
-					</Text>
-				</Toggle>
-
-				{enableGradient && (
-					<View className={"w-full items-center gap-5"}>
-						<ColorPicker
-							style={{ width: "70%" }}
-							value={gradient[0]}
-							onComplete={({ hex }) => onSelectColor(hex, 0)}
-						>
-							<HueSlider thumbShape="pill" thumbColor="white" />
-						</ColorPicker>
-
-						<ColorPicker
-							style={{ width: "70%" }}
-							value={gradient[1]}
-							onComplete={({ hex }) => onSelectColor(hex, 1)}
-						>
-							<HueSlider thumbShape="pill" thumbColor="white" />
-						</ColorPicker>
-					</View>
-				)}
-			</View>
-
-			<Animatable.View ref={animateRef} className="items-center my-3">
+			<Animatable.View ref={animateRef} className="items-center pb-3">
 				<QRCode
 					quietZone={10}
 					value={content}
@@ -113,20 +99,38 @@ const GeneratorResult = ({
 					logoSize={70}
 				/>
 			</Animatable.View>
-			<Button variant={"default"} onPress={handleSave}>
+
+			{enableGradient && (
+				<View className="w-full items-center gap-5 pb-3">
+					<ColorPicker
+						style={{ width: "70%" }}
+						value={gradient[0]}
+						onComplete={({ hex }) => onSelectColor(hex, 0)}>
+						<HueSlider thumbShape="pill" thumbColor="white" />
+					</ColorPicker>
+
+					<ColorPicker
+						style={{ width: "70%" }}
+						value={gradient[1]}
+						onComplete={({ hex }) => onSelectColor(hex, 1)}>
+						<HueSlider thumbShape="pill" thumbColor="white" />
+					</ColorPicker>
+				</View>
+			)}
+
+			<Button variant="default" onPress={handleSave} disabled={saved}>
 				<View className={buttonContentClass}>
-					<icons.Paste className="text-background" size={20} />
+					<icons.ImageDown className="text-background" size={20} />
 					<Text className="text-background">Save</Text>
 				</View>
 			</Button>
 			<Button
 				disabled={content === ""}
-				variant={"destructive"}
-				onPress={handleReset}
-			>
+				variant="destructive"
+				onPress={handleReset}>
 				<View className={buttonContentClass}>
-					<icons.Trash color={"white"} size={20} />
-					<Text style={{ color: "white" }}>Clear</Text>
+					<icons.Trash className="text-white" size={20} />
+					<Text className="text-white">Clear</Text>
 				</View>
 			</Button>
 		</>

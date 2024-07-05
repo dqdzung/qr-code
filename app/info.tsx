@@ -8,7 +8,7 @@ const TabInfo = () => {
 			<Pressable
 				onPress={() => Linking.openURL("https://github.com/dqdzung/qr-code")}>
 				<Text className="text-foreground underline text-xl">
-					made by @dqdzung
+					@hihi_haha_hoho
 				</Text>
 			</Pressable>
 		</View>

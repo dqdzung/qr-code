@@ -6,7 +6,7 @@ import * as Clipboard from "expo-clipboard";
 import icons from "~/lib/icons";
 
 export const buttonContentClass = "flex-row items-center gap-2";
-export const textareaClass = "border-red-600 text-lg flex-1 max-h-[350px]";
+export const textareaClass = "border-red-600 text-lg flex-1";
 
 const GeneratorInput = ({
 	content,
@@ -23,7 +23,7 @@ const GeneratorInput = ({
 	};
 
 	return (
-		<View className="w-full gap-3 flex-1">
+		<View className="w-full gap-3 flex-1 pb-10">
 			<Textarea
 				className={textareaClass}
 				placeholder="Content..."

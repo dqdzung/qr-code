@@ -8,6 +8,7 @@ import { Button } from "~/components/ui/button";
 import icons from "~/lib/icons";
 import { useState } from "react";
 import ScanResult from "~/components/ScanResult";
+import { cn } from "~/lib/utils";
 
 const containerClass = "flex-1 items-center gap-3";
 
@@ -31,7 +32,7 @@ export default function TabHome() {
 	if (!permission.granted) {
 		// Camera permissions are not granted yet.
 		return (
-			<View className={containerClass}>
+			<View className={cn(containerClass, "justify-center")}>
 				<Text className="text-foreground">
 					We need your permission to show the camera
 				</Text>

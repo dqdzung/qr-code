@@ -87,7 +87,7 @@ const GeneratorResult = ({
 		<View className="flex-1 gap-3 align-center">
 			<Animatable.View
 				ref={animateRef}
-				className="items-center justify-center flex-1">
+				className="items-center justify-center flex-1 gap-5">
 				<QRCode
 					quietZone={10}
 					value={content}
@@ -101,11 +101,8 @@ const GeneratorResult = ({
 					logoBorderRadius={100}
 					logoSize={70}
 				/>
-			</Animatable.View>
-
-			<View className="flex-1 gap-3">
 				{enableGradient && (
-					<View className="w-full items-center gap-5 pb-4">
+					<View className="w-full items-center gap-5">
 						<ColorPicker
 							style={{ width: "70%" }}
 							value={gradient[0]}
@@ -121,7 +118,9 @@ const GeneratorResult = ({
 						</ColorPicker>
 					</View>
 				)}
+			</Animatable.View>
 
+			<View className="gap-3 pb-10">
 				<Button variant="default" onPress={handleSave} disabled={saved}>
 					<View className={buttonContentClass}>
 						<icons.ImageDown className="text-background" size={20} />

@@ -19,6 +19,12 @@ export default function TabHome() {
 	const [scanned, setScanned] = useState(false);
 	const [flashOn, setFlashOn] = useState(false);
 
+	const handleReset = () => {
+		setContent("");
+		setScanned(false);
+    setFlashOn(false);
+	};
+
 	const handleBarCodeScanned = ({ data }: BarcodeScanningResult) => {
 		setScanned(true);
 		setContent(data);
@@ -45,33 +51,31 @@ export default function TabHome() {
 
 	return (
 		<View className={containerClass}>
-			{!scanned ? (
-				<>
-					<CameraView
-						className="w-full flex-1"
-						style={{ maxHeight: 400 }}
-						facing="back"
-						enableTorch={flashOn}
-						onBarcodeScanned={handleBarCodeScanned}>
-						<View className="flex-1 items-center justify-center">
-							<icons.Scan size={450} strokeWidth={0.4} className="text-white" />
-						</View>
-					</CameraView>
+			<CameraView
+				className="w-full flex-1"
+				style={{ maxHeight: 400 }}
+				facing="back"
+				enableTorch={flashOn}
+				onBarcodeScanned={handleBarCodeScanned}>
+				<View className="flex-1 items-center justify-center">
+					<icons.Scan size={450} strokeWidth={0.4} className="text-white" />
+				</View>
+			</CameraView>
 
-					<Button
-						className="mt-12 w-[150px]"
-						onPress={() => setFlashOn(!flashOn)}
-						size="lg">
-						{!flashOn ? (
-							<icons.Zap className="text-background" />
-						) : (
-							<icons.ZapOff className="text-background" />
-						)}
-					</Button>
-				</>
-			) : (
-				<ScanResult content={content} handleRescan={() => setScanned(false)} />
-			)}
+			<View className="flex-1 items-center justify-center gap-3 w-full pb-12">
+				<Button
+					className="w-[150px]"
+					onPress={() => setFlashOn(!flashOn)}
+					size="lg">
+					{!flashOn ? (
+						<icons.Zap className="text-background" />
+					) : (
+						<icons.ZapOff className="text-background" />
+					)}
+				</Button>
+
+				{scanned && <ScanResult content={content} handleClear={handleReset} />}
+			</View>
 		</View>
 	);
 }

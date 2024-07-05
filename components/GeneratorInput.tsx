@@ -40,15 +40,6 @@ const GeneratorInput = ({
 						<Text className="text-background">Paste from clipboard</Text>
 					</View>
 				</Button>
-				<Button
-					className="flex-1"
-					variant="secondary"
-					onPress={() => setContent("")}>
-					<View className={buttonContentClass}>
-						<icons.Trash className="text-foreground" size={20} />
-						<Text className="text-foreground">Clear</Text>
-					</View>
-				</Button>
 			</View>
 			<Button
 				disabled={content === ""}

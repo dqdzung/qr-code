@@ -31,11 +31,12 @@ const GeneratorResult = ({
 	const [saved, setSaved] = useState(false);
 
 	const handleReset = () => {
-		onReset();
+		navigation.setOptions({ headerRight: () => null });
 		setQrRef(null);
 		setEnableGradient(false);
 		setGradient(DEFAULT_GRADIENT);
 		setSaved(false);
+		onReset();
 	};
 
 	const handleSave = async () => {

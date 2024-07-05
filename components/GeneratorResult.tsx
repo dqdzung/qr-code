@@ -66,19 +66,6 @@ const GeneratorResult = ({
 	return (
 		<>
 			<View className="w-full items-center gap-5">
-				{/* <View className="flex-row items-center gap-2">
-					<Switch
-						checked={enableGradient}
-						onCheckedChange={setEnableGradient}
-						nativeID="linear-gradient"
-					/>
-					<Label
-						nativeID="linear-gradient"
-						onPress={() => setEnableGradient((prev) => !prev)}
-					>
-						Linear gradient
-					</Label>
-				</View> */}
 				<Toggle
 					pressed={enableGradient}
 					onPressedChange={setEnableGradient}

@@ -86,7 +86,7 @@ export default function RootLayout() {
 				<Stack.Screen
 					name="index"
 					options={{
-						animation: "fade_from_bottom",
+						animation: "fade",
 						title: "QR Reader",
 					}}
 				/>
